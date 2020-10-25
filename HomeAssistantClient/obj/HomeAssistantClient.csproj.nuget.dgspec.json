@@ -37,6 +37,28 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "dependencies": {
+            "JsonSubTypes": {
+              "target": "Package",
+              "version": "[1.8.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            },
+            "System.Reactive": {
+              "target": "Package",
+              "version": "[5.0.0-preview.220, )"
+            },
+            "System.Reactive.Linq": {
+              "target": "Package",
+              "version": "[5.0.0-preview.220, )"
+            },
+            "Websocket.Client": {
+              "target": "Package",
+              "version": "[4.3.21, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
