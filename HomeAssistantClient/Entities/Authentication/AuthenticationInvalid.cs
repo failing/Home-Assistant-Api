@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace HomeAssistantApi.Messages
+namespace HomeAssistantClient.Messages
 
 {
     public class AuthenticationInvalid : HassMessage

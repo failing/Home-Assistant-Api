@@ -1,4 +1,4 @@
-﻿namespace HomeAssistantApi.Messages
+﻿namespace HomeAssistantClient.Messages
 
 {
     public class AuthenticationOk : HassMessage

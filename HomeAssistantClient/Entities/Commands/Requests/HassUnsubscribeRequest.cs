@@ -1,9 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace HomeAssistantApi.Messages
-
+namespace HomeAssistantClient.Messages
 {
-    public class Unsubscribe : CommandRequest
+    public class HassUnsubscribeRequest : HassCmdRequest
     {
         internal override dynamic Type => HassCommandType.UnsubscribeEvents;
 

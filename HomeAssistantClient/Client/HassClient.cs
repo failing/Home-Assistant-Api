@@ -1,5 +1,5 @@
-﻿using HomeAssistantApi.Config;
-using HomeAssistantApi.Messages;
+﻿using HomeAssistantClient.Config;
+using HomeAssistantClient.Messages;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -11,7 +11,7 @@ using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Websocket.Client;
 
-namespace HomeAssistantApi
+namespace HomeAssistantClient
 {
     public class HassClient : IHassClient
     {
@@ -21,7 +21,7 @@ namespace HomeAssistantApi
         private Subject<HassMessage> Messages = new Subject<HassMessage>();
         private Subject<HassEvent> Events = new Subject<HassEvent>();
         private bool _isAuthed = false;
-        private ConcurrentDictionary<SubscribeEventType, int> _subscriptions = new ConcurrentDictionary<SubscribeEventType, int>();
+        private ConcurrentDictionary<HassSubscribeEventType, int> _subscriptions = new ConcurrentDictionary<HassSubscribeEventType, int>();
 
         /// <summary>
         /// The current sequential ID used by home assistant to correlate messages
@@ -34,7 +34,7 @@ namespace HomeAssistantApi
         /// <remarks>
         /// On startup this list will always contain a StateChange subscription.
         /// </remarks>
-        public List<KeyValuePair<SubscribeEventType, int>> Subscriptions => _subscriptions.Where(a => a.Value > 0).ToList();
+        public List<KeyValuePair<HassSubscribeEventType, int>> Subscriptions => _subscriptions.Where(a => a.Value > 0).ToList();
 
         /// <summary>
         /// The home assistant service.
@@ -83,8 +83,8 @@ namespace HomeAssistantApi
             if (_isAuthed)
             {
                 int id = GetId();
-                _subscriptions.TryAdd(SubscribeEventType.StateChange, id);
-                var initalSub = new Subscribe() { Id = id, EventType = SubscribeEventType.StateChange };
+                _subscriptions.TryAdd(HassSubscribeEventType.StateChange, id);
+                var initalSub = new HassSubscribeRequest() { Id = id, EventType = HassSubscribeEventType.StateChange };
                 await ClientSend(initalSub);
             }
         }
@@ -174,7 +174,7 @@ namespace HomeAssistantApi
                 }
                 else if (isPanels)
                 {
-                    Messages.OnNext(new HassPanelResponse() { Result = response.Result.ToObject<Dictionary<string, PanelEntries>>(), Id = response.Id });
+                    Messages.OnNext(new HassPanelResponse() { Result = response.Result.ToObject<Dictionary<string, HassPanelEntries>>(), Id = response.Id });
                 }
                 else if (isThemes)
                 {
@@ -186,7 +186,6 @@ namespace HomeAssistantApi
                 }
                 else
                 {
-                    response.Result = null; // we shouldn't really care about it so just null it out
                     Messages.OnNext(response);
                 }
             }
@@ -224,12 +223,12 @@ namespace HomeAssistantApi
         /// </summary>
         /// <param name="sub">The type of Hass Subscription</param>
         /// <returns>A HassResponse that the subscription was succesful</returns>
-        public async Task<HassResponse> SubscribeToEvents(SubscribeEventType sub)
+        public async Task<HassResponse> SubscribeToEvents(HassSubscribeEventType sub)
         {
             int id = GetId();
             if (_subscriptions.TryAdd(sub, id))
             {
-                var subMsg = new Subscribe() { Id = id, EventType = sub };
+                var subMsg = new HassSubscribeRequest() { Id = id, EventType = sub };
                 await ClientSend(subMsg);
             }
             else
@@ -250,11 +249,11 @@ namespace HomeAssistantApi
         /// </summary>
         /// <param name="sub">The type of Hass Subscription</param>
         /// <returns>A HassResponse that the subscription was succesful</returns>
-        public async Task<HassResponse> UnsubscribeToEvents(SubscribeEventType sub)
+        public async Task<HassResponse> UnsubscribeToEvents(HassSubscribeEventType sub)
         {
             if (_subscriptions.TryGetValue(sub, out int id))
             {
-                var unsubMsg = new Unsubscribe() { Subscription = id, Id = GetId() };
+                var unsubMsg = new HassUnsubscribeRequest() { Subscription = id, Id = GetId() };
                 await ClientSend(unsubMsg);
             }
 
@@ -266,8 +265,8 @@ namespace HomeAssistantApi
         /// </summary>
         /// <param name="commandToSend">The command to send, see GenericCommand</param>
         /// <param name="timespan">The time to wait for the command to be acknowledged</param>
-        /// <returns></returns>
-        public async Task<HassResponse> SendCommandAsync(CommandRequest commandToSend, TimeSpan? timespan = null)
+        /// <returns>The command response</returns>
+        public async Task<HassResponse> SendCommandAsync(HassCmdRequest commandToSend, TimeSpan? timespan = null)
         {
             commandToSend.Id = GetId();
 
@@ -293,7 +292,7 @@ namespace HomeAssistantApi
         /// <param name="commandToSend"></param>
         /// <param name="timespan"></param>
         /// <returns></returns>
-        public IObservable<HassResponse> SendCommand(CommandRequest commandToSend, TimeSpan? timespan = null)
+        public IObservable<HassResponse> SendCommand(HassCmdRequest commandToSend, TimeSpan? timespan = null)
         {
             commandToSend.Id = GetId();
 
@@ -327,7 +326,7 @@ namespace HomeAssistantApi
                 timespan = TimeSpan.FromSeconds(5);
             }
 
-            await ClientSend(new GenericCommand() { Id = id, CommandType = HassCommandType.GetStates });
+            await ClientSend(new HassGenericCmd() { Id = id, CommandType = HassCommandType.GetStates });
 
             var stream = Messages.AsObservable().Where(r => r.Type == HassReturnType.Result)
                                                 .OfType<HassStateResponse>()
@@ -354,7 +353,7 @@ namespace HomeAssistantApi
                 timespan = TimeSpan.FromSeconds(5);
             }
 
-            ClientSend(new GenericCommand() { Id = id, CommandType = HassCommandType.GetStates }).Wait();
+            ClientSend(new HassGenericCmd() { Id = id, CommandType = HassCommandType.GetStates }).Wait();
 
             var stream = Messages.Where(r => r.Type == HassReturnType.Result)
                                                 .OfType<HassStateResponse>()
@@ -375,7 +374,7 @@ namespace HomeAssistantApi
         {
             int id = GetId();
 
-            await ClientSend(new GenericCommand() { Id = id, CommandType = HassCommandType.GetStates });
+            await ClientSend(new HassGenericCmd() { Id = id, CommandType = HassCommandType.GetStates });
 
             var stream = Messages.AsObservable().Where(r => r.Type == HassReturnType.Result)
                                                 .OfType<HassStateResponse>()
@@ -395,7 +394,7 @@ namespace HomeAssistantApi
         {
             int id = GetId();
 
-            ClientSend(new GenericCommand() { Id = id, CommandType = HassCommandType.GetStates }).Wait();
+            ClientSend(new HassGenericCmd() { Id = id, CommandType = HassCommandType.GetStates }).Wait();
 
             var stream = Messages.AsObservable().Where(r => r.Type == HassReturnType.Result)
                                                 .OfType<HassStateResponse>()
@@ -420,7 +419,7 @@ namespace HomeAssistantApi
                 timespan = TimeSpan.FromSeconds(5);
             }
 
-            await ClientSend(new GenericCommand() { Id = id, CommandType = HassCommandType.GetStates });
+            await ClientSend(new HassGenericCmd() { Id = id, CommandType = HassCommandType.GetStates });
 
             var stream = Messages.Where(r => r.Type == HassReturnType.Result)
                                                 .OfType<HassStateResponse>()
@@ -444,13 +443,37 @@ namespace HomeAssistantApi
                 timespan = TimeSpan.FromSeconds(5);
             }
 
-            ClientSend(new GenericCommand() { Id = id, CommandType = HassCommandType.GetStates }).Wait();
+            ClientSend(new HassGenericCmd() { Id = id, CommandType = HassCommandType.GetStates }).Wait();
 
             var stream = Messages.Where(r => r.Type == HassReturnType.Result)
                                                 .OfType<HassStateResponse>()
                                                 .Where(r => r.Id == id)
                                                 .Timeout(timespan.Value).Catch(Observable.Return((HassStateResponse)null));
             return stream;
+        }
+
+        /// <summary>
+        /// Gets a list of all entities
+        /// </summary>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public async Task<List<string>> GetEntityList(TimeSpan? timeout = null)
+        {
+            int id = GetId();
+
+            if (!timeout.HasValue)
+            {
+                timeout = TimeSpan.FromSeconds(5);
+            }
+
+            await ClientSend(new HassGenericCmd() { Id = id, CommandType = HassCommandType.ListEntities });
+
+            var stream = Messages.Where(r => r.Type == HassReturnType.Result)
+                                                .OfType<HassResponse>()
+                                                .Where(r => r.Id == id).Take(1)
+                                                .Select(a => a.Result.DescendantsAndSelf().OfType<JObject>().ToList().FirstOrDefault().Properties().Select(a => a.Name).ToList()).Cast<List<string>>().Timeout(timeout.Value).Catch(null);
+
+            return await stream.FirstOrDefaultAsync();
         }
 
         /// <summary>

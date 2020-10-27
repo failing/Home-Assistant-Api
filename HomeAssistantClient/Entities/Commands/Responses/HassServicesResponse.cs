@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace HomeAssistantApi.Messages
+namespace HomeAssistantClient.Messages
 
 {
-    public class HassServicesResponse : CommandResponse<Dictionary<string, dynamic>>
+    public class HassServicesResponse : HassCmdResponse<Dictionary<string, dynamic>>
     {
     }
 }

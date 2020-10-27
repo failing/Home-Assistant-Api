@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace HomeAssistantApi.Messages
+namespace HomeAssistantClient.Messages
 {
     public class HassConfig
     {

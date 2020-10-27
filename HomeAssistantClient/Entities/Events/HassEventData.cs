@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace HomeAssistantApi.Messages
+namespace HomeAssistantClient.Messages
 {
     public class HassEventData
     {

@@ -1,13 +1,13 @@
 ﻿using Newtonsoft.Json;
 
-namespace HomeAssistantApi.Messages
+namespace HomeAssistantClient.Messages
 
 {
-    public class Subscribe : CommandRequest
+    public class HassSubscribeRequest : HassCmdRequest
     {
         internal override dynamic Type => HassCommandType.SubscribeEvents;
 
         [JsonProperty("event_type")]
-        public SubscribeEventType EventType { get; set; }
+        public HassSubscribeEventType EventType { get; set; }
     }
 }

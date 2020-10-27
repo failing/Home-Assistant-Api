@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace HomeAssistantApi.Messages
+namespace HomeAssistantClient.Messages
 {
     public sealed class HassEvent : HassMessage
     {

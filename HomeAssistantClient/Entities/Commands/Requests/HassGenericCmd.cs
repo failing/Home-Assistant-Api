@@ -1,9 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace HomeAssistantApi.Messages
-
+namespace HomeAssistantClient.Messages
 {
-    public class GenericCommand : CommandRequest
+    public class HassGenericCmd : HassCmdRequest
     {
         [JsonIgnore]
         public HassCommandType CommandType { get; set; }

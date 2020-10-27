@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace HomeAssistantApi.Messages
+namespace HomeAssistantClient.Messages
 {
     public class HassEventFull
     {

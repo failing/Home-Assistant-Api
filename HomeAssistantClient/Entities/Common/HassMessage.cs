@@ -1,7 +1,7 @@
 ﻿using JsonSubTypes;
 using Newtonsoft.Json;
 
-namespace HomeAssistantApi.Messages
+namespace HomeAssistantClient.Messages
 
 {
     [JsonConverter(typeof(JsonSubtypes), "Type")]

@@ -1,10 +1,10 @@
 ﻿using JsonSubTypes;
 using Newtonsoft.Json;
 
-namespace HomeAssistantApi.Messages
+namespace HomeAssistantClient.Messages
 
 {
-    public class CommandResponse<T> : HassMessage
+    public class HassCmdResponse<T> : HassMessage
     {
         [JsonProperty("id")]
         public int Id { get; set; }

@@ -2,11 +2,11 @@
 using Newtonsoft.Json.Converters;
 using System.Runtime.Serialization;
 
-namespace HomeAssistantApi.Messages
+namespace HomeAssistantClient.Messages
 
 {
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum SubscribeEventType
+    public enum HassSubscribeEventType
     {
         [EnumMember(Value = "state_changed")] StateChange,
         [EnumMember(Value = "component_loaded")] ComponentLoaded,

@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Converters;
 using System.Runtime.Serialization;
 
-namespace HomeAssistantApi.Messages
+namespace HomeAssistantClient.Messages
 {
     [JsonConverter(typeof(StringEnumConverter))]
     public enum HassReturnType

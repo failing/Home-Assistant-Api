@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace HomeAssistantApi.Messages
+namespace HomeAssistantClient.Messages
 {
-    public class CallService : CommandRequest
+    public class HassServiceCall : HassCmdRequest
     {
         internal override dynamic Type => HassCommandType.CallService;
 
@@ -11,8 +11,10 @@ namespace HomeAssistantApi.Messages
 
         [JsonProperty("service")]
         public string Service { get; set; }
-
         [JsonProperty("service_data")]
-        public object ServiceData { get; set; }
+        
+        public dynamic? ServiceData { get; set; }
     }
 }
+
+

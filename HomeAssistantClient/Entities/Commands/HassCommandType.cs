@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Converters;
 using System.Runtime.Serialization;
 
-namespace HomeAssistantApi.Messages
+namespace HomeAssistantClient.Messages
 {
     [JsonConverter(typeof(StringEnumConverter))]
     public enum HassCommandType
@@ -14,10 +14,9 @@ namespace HomeAssistantApi.Messages
         [EnumMember(Value = "get_config")] GetConfig,
         [EnumMember(Value = "get_services")] GetServices,
         [EnumMember(Value = "auth/current_user")] GetCurrentUser,
-        [EnumMember(Value = "manifest/list")] GetIntergrations, 
-        [EnumMember(Value = "entity/source")] Source,
-
+        [EnumMember(Value = "manifest/list")] GetIntergrations,
         [EnumMember(Value = "manifest/get")] GetIntergration,
+        [EnumMember(Value = "entity/source")] ListEntities,
         [EnumMember(Value = "auth")] Auth,
         [EnumMember(Value = "get_panels")] GetPanels,
         [EnumMember(Value = "media_player_thumbnail")] MediaPlayerThumbnail,

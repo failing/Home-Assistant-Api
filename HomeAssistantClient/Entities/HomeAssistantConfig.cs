@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HomeAssistantApi.Config
+namespace HomeAssistantClient.Config
 {
     public class HomeAssistantConfig
     {

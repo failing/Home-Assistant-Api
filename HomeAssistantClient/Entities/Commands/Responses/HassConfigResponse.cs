@@ -1,7 +1,7 @@
-﻿namespace HomeAssistantApi.Messages
+﻿namespace HomeAssistantClient.Messages
 
 {
-    public class HassConfigResponse : CommandResponse<HassConfig>
+    public class HassConfigResponse : HassCmdResponse<HassConfig>
     {
 
     }
