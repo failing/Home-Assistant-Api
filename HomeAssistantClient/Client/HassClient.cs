@@ -57,7 +57,7 @@ namespace HomeAssistantClient
             await _client.Start();
             _client.MessageReceived.Subscribe(msg =>
             {
-                IncomingMessageRouter(msg.Text);
+                _ = IncomingMessageRouter(msg.Text);
             });
 
             await Authenticate();
@@ -477,7 +477,7 @@ namespace HomeAssistantClient
         }
 
         /// <summary>
-        /// A never ending observable of all responses
+        /// A never ending observable of all responses (commands, etc)
         /// </summary>
         /// <returns></returns>
         public IObservable<HassResponse> GetMessages()

@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeAssistantClient", "Home
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeAssistantApi", "..\HomeAssistantApi\HomeAssistantApi\HomeAssistantApi.csproj", "{7F3AED69-576F-49C8-B75B-8041C1B4820E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp1", "BlazorApp1\BlazorApp1.csproj", "{4BE1F018-B777-428D-9A32-74A3E72D8152}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{7F3AED69-576F-49C8-B75B-8041C1B4820E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F3AED69-576F-49C8-B75B-8041C1B4820E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F3AED69-576F-49C8-B75B-8041C1B4820E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BE1F018-B777-428D-9A32-74A3E72D8152}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BE1F018-B777-428D-9A32-74A3E72D8152}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BE1F018-B777-428D-9A32-74A3E72D8152}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BE1F018-B777-428D-9A32-74A3E72D8152}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
